@@ -1,2 +1,2 @@
 # weatherpeople
-Group Weatherpeople 
+We develop reliable forcasts for drought
