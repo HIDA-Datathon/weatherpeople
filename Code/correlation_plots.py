@@ -8,6 +8,7 @@ Created on Fri Nov  6 10:05:21 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
+import netCDF4 as nc
 
 def load_data(output_path = '../Data/nao_index_train.npy',
               x1_path = '../Data/tas_train.npy',
@@ -45,6 +46,12 @@ x1, x2, y = load_data()
 x1 = x1.reshape((900,54,43))
 x2 = x2.reshape((900,54,43))
 
+# load netcdf file to get longitude / latitude
+file = '../Data/tas_train.nc'
+data_in = nc.Dataset(file, 'r')
+lat = nc.Dataset(file, 'r').variables['lat'].__array__().data
+lon = nc.Dataset(file, 'r').variables['lon'].__array__().data
+
 
 corr_temp = np.zeros((54,43))
 corr_press = np.zeros((54,43))
@@ -56,8 +63,13 @@ for i in range(54):
 
 
 
-x = np.arange(-78.75, -78.75+ 1.875*43, 1.875 )
-y = np.arange(-19.5852186088223,-19.5852186088223+54*1.865, 1.865)
+x_old = np.arange(-78.75, -78.75+ 1.875*43, 1.875 )
+y_old = np.arange(-19.5852186088223,-19.5852186088223+54*1.865, 1.865)
+x = lon
+y = lat
+# check, if lat lon is similar
+print(np.mean(x_old-x))
+print(np.mean(y_old-y))
 
 X, Y = np.meshgrid(x, y)
 
